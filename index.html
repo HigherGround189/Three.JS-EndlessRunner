@@ -357,21 +357,21 @@
     seconds ++
   }, 10)
 
-  window.reset = function() {
-    cube.position.set(0, 0, 0)
+//   window.reset = function() {
+//     cube.position.set(0, 0, 0)
     
-    enemies.forEach(enemy => scene.remove(enemy))
+//     enemies.forEach(enemy => scene.remove(enemy))
 
-    seconds = 0
-    frames = 0
-    spawnRate = 200
+//     seconds = 0
+//     frames = 0
+//     spawnRate = 200
 
-    document.querySelector('.end-background').classList.remove('animation-end-background')
-    document.querySelector('.filter').classList.remove('animation-filter')
-    document.querySelector('.end-screen-wrapper').style.display = 'none'
+//     document.querySelector('.end-background').classList.remove('animation-end-background')
+//     document.querySelector('.filter').classList.remove('animation-filter')
+//     document.querySelector('.end-screen-wrapper').style.display = 'none'
 
-    animate()
-}
+//     animate()
+// }
 
 
   const enemies = []
@@ -420,6 +420,9 @@
         document.querySelector('.filter').classList.add('animation-filter')
         document.querySelector('#display').textContent = `You were alive for ${seconds / 100}s!`
 
+        document.querySelector('button').addEventListener('click', () => {
+          location.reload();
+        });
       }})
 
 
