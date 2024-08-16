@@ -10,6 +10,12 @@
   body{
     background-color: #312e81;
     z-index: -999;
+    overflow: hidden;
+  }
+
+  canvas{
+    width: 100vw;
+    height: 100vh;
   }
 
   .end-screen-wrapper{
@@ -95,8 +101,6 @@
     background-color:  #2ed98f;
   }
 
-
-
 </style>
 
 <body>
@@ -147,6 +151,11 @@
   renderer.setSize(window.innerWidth, window.innerHeight)
   document.body.appendChild(renderer.domElement)
 
+  const loader = new THREE.TextureLoader();
+  const texture = loader.load('../Youtube_Project/Thumbnails/Finixie.jpg' )
+
+
+
   const controls = new OrbitControls(camera, renderer.domElement)
 
   class Box extends THREE.Mesh {  
@@ -158,11 +167,12 @@
       velocity = { x: 0, y: 0, z: 0},
       position = { x: 0, y: 0, z: 0},
       zAcceleration = false,
+      map = texture
     }
     ) {
       super(
         new THREE.BoxGeometry(width, height, depth), 
-        new THREE.MeshStandardMaterial({ color })
+        new THREE.MeshStandardMaterial({ color}, {map: texture})
       )
 
       this.width = width
@@ -190,14 +200,6 @@
       this.back = this.position.z - this.depth / 2
     }
 
-    collisionDetection() {
-      const xCollision = this.right >= ground.left && this.left <= ground.right
-      const yCollision = this.bottom <= ground.top && this.top >= ground.bottom
-      const zCollision = this.front >= ground.back && this.back <= ground.front
-
-      if (xCollision && yCollision && zCollision) {
-      }
-    }
 
     update(ground) {
       this.updateSides()
@@ -206,8 +208,6 @@
 
       this.position.x += this.velocity.x 
       this.position.z += this.velocity.z
-
-      this.collisionDetection()
 
       this.applyGravity(ground)
     }
@@ -253,20 +253,21 @@
       x: 0,
       y: -0.01,
       z: 0
-    }
+    },
+    map: texture
   })
   cube.castShadow = true
   scene.add(cube)
 
   const ground = new Box({
-    width: 9,
+    width: 7,
     height: 0.5,
     depth: 20,
     color: '#155e75',
     position: {
       x: 0,
       y: -2,
-      z: 0
+      z: -9
     }
   })
   ground.receiveShadow = true
@@ -427,9 +428,9 @@
 
 
     if (frames % spawnRate === 0) {
-      if (spawnRate > 15) spawnRate  -= 19
+      if (spawnRate > 10) spawnRate  -= 19
 
-      const rand = (Math.random() * 9) - 4.5
+      const rand = (Math.random() * 7) - 3.5
 
       const enemy = new Box({
         width: 1,
@@ -438,7 +439,7 @@
         position: {
           x: rand,
           y: 0,
-          z: -11
+          z: -20
         },
         velocity: {
           x: 0,
